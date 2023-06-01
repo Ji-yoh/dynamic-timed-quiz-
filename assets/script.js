@@ -1,3 +1,5 @@
+// create query selectors for html elements
+
 var splashScreen = document.getElementById("splash_screen");
 var startButton = document.getElementById("start_quiz");
 var timerHolder = document.getElementById("timer_holder");
@@ -10,6 +12,14 @@ var fourthAnswer = document.getElementById("answer_4");
 
 var timer = 60;
 var quizStarted = false;
+
+// event listener to start quiz
+// create timer element
+// timer needs to countdown when question screen is displayed
+// question text needs to be displayed on page
+// answer choices need to appear as buttons
+// if correct button is selected the next question is displayed
+// if incorrect button is selected timer needs to decrement
 
 startButton.addEventListener("click", function(event){
     splashScreen.style.display = "none";
@@ -25,3 +35,6 @@ function renderTimerToBrowser() {
 function renderQuestionToBrowser() {
     questionScreen.style.display = "block";
 }
+
+// when quiz ends save user initials and score to local storage
+// user data needs to be displayed
