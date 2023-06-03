@@ -3,10 +3,29 @@ body {
     font-family:Verdana, Geneva, Tahoma, sans-serif;
 }
 
+#main_screen {
+    border: solid 2px gray;
+    margin-left: 20vh;
+    margin-right: 20vh;
+    box-shadow: 10px 5px 5px darkgrey;
+}
+
+#splash_screen {
+    margin: 25vh;
+}
+
 #question_screen {
     display: none;
+    margin: 10vh;
 }
 
 #answer_holder {
-    display: none;
+    display: none; 
+}
+
+.answers {
+    margin: 10px;
+    padding: 15px;
+    background-color: purple;
+    color: white;
 }

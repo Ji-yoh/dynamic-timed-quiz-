@@ -7,12 +7,17 @@ var questionScreen = document.getElementById("question_screen");
 var questionText = document.getElementById("question_text");
 var answerList = document.getElementById("answer_holder");
 
-var firstAnswer = document.getElementById("answer_1");
-var secondAnswer = document.getElementById("answer_2");
-var thirdAnswer = document.getElementById("answer_3");
-var fourthAnswer = document.getElementById("answer_4");
+// generate answer buttons on answer holder and have choices change with each question
+var firstAnswer = document.createElement("button");
+firstAnswer.setAttribute("class", "answers");
+var secondAnswer = document.createElement("button");
+secondAnswer.setAttribute("class", "answers");
+var thirdAnswer = document.createElement("button");
+thirdAnswer.setAttribute("class", "answers")
+var fourthAnswer = document.createElement("button");
+fourthAnswer.setAttribute("class", "answers")
 
-var timer = 60;
+var timer = 90;
 var quizStarted = false;
 
 // event listener to start quiz (done)
@@ -42,6 +47,7 @@ startButton.addEventListener("click", function(event){
             questionScreen.textContent = "Out of time! Try Again!"
             questionScreen.style.fontWeight = "bold";
             quizStarted = false;
+            answerList.style.display = "none";
         }
         renderTimerToBrowser();
     }, 1000);
@@ -58,7 +64,14 @@ function renderQuestionToBrowser() {
 
 function renderAnswerToBrowser() {
     answerList.style.display = "block";
-    answerList.textContent = answerList1.first_choice;
+    answerList.appendChild(firstAnswer);
+    firstAnswer.textContent = answersText.a;
+    answerList.appendChild(secondAnswer);
+    secondAnswer.textContent = answersText.b;
+    answerList.appendChild(thirdAnswer);
+    thirdAnswer.textContent = answersText.c;
+    answerList.appendChild(fourthAnswer);
+    fourthAnswer.textContent = answersText.d;
 }
 
 var questionList = {
@@ -66,12 +79,13 @@ var questionList = {
 
 }
 
-var answerList1 = {
-    first_choice: firstAnswer.textContent = "Javascript",
-    second_choice: secondAnswer.textContent = "HTML",
-    third_choice: thirdAnswer.textContent = "CSS",
-    fourth_choice: fourthAnswer.textContent = "None of the above"
-};
+var answersText = {
+    a: "Javascript",
+    b: "HTML",
+    c: "CSS",
+    d: "None of the above"
+}
+
 
 // when quiz ends save user initials and score to local storage
 // user data needs to be displayed
