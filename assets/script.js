@@ -1,46 +1,38 @@
 // create query selectors for html elements
-
+var mainScreen = document.getElementById("main_screen");
 var splashScreen = document.getElementById("splash_screen");
 var startButton = document.getElementById("start_quiz");
 var timerHolder = document.getElementById("timer_holder");
 var questionScreen = document.getElementById("question_screen");
-var questionText = document.getElementById("question_text");
+/*var questionText = document.getElementById("question_text");*/
 var answerList = document.getElementById("answer_holder");
+var questionText = document.createElement("h3");
+questionText.setAttribute("id", "question");
 
 // generate answer buttons on answer holder and have choices change with each question
-var firstAnswer = document.createElement("button");
-firstAnswer.setAttribute("class", "answers");
-var secondAnswer = document.createElement("button");
-secondAnswer.setAttribute("class", "answers");
-var thirdAnswer = document.createElement("button");
-thirdAnswer.setAttribute("class", "answers")
-var fourthAnswer = document.createElement("button");
-fourthAnswer.setAttribute("class", "answers")
+// refactoring code to pull questions and answers from array of objects
 
 var timer = 90;
 var quizStarted = false;
 
-// event listener to start quiz (done)
-// create timer element (done)
-// timer needs to countdown when question screen is displayed (done)
 // question text needs to be displayed on page (done)
-// answer choices need to appear as buttons, each html button needs to display a question- look for a JS method that creates buttons(?)
+// answer choices need to appear as buttons, each html button needs to display a question- look for a JS method that creates buttons(?) (done)
 // if correct button is selected the next question is displayed
 // if incorrect button is selected timer needs to decrement
 
-startButton.addEventListener("click", function(event){
+startButton.addEventListener("click", function(){
     splashScreen.style.display = "none";
     renderTimerToBrowser();
     quizStarted = true;
-    renderQuestionToBrowser();
-    renderAnswerToBrowser();
+    renderQuestionToBrowser(0);
+    //renderAnswerToBrowser();
 
     var interval = setInterval(function() {
         if (!quizStarted) {
             return;
         }
         timer --;
-
+        // need to also decrement timer if incorrect answer is selected, find way to ID correct and incorrect answers and assign to buttons
         if (timer <= 0) {
             clearInterval(interval);
 
@@ -51,40 +43,70 @@ startButton.addEventListener("click", function(event){
         }
         renderTimerToBrowser();
     }, 1000);
-})
+});
 
 function renderTimerToBrowser() {
     timerHolder.textContent = "Time: " + timer;
 }
 
-function renderQuestionToBrowser() {
+
+function renderQuestionToBrowser(questionNumber) {
     questionScreen.style.display = "block";
-    questionScreen.textContent = questionList.text_1;// create variable/object for questions
-}
+    answerList.style.display = "flex";
+    // declared questionText in global scope
+    questionText.textContent = questions[questionNumber].question; 
+    
+    questionScreen.appendChild(questionText);
+    
+    
+    for (var i = 0; i < questions[questionNumber].answers.length; i++) {
+        var question = Array.from(questions)[i];
+        var answerButton = document.createElement("button");
+        answerButton.setAttribute("id", "answers");
+        answerButton.textContent = questions[questionNumber].answers[i];
+        answerList.appendChild(answerButton);
 
-function renderAnswerToBrowser() {
-    answerList.style.display = "block";
-    answerList.appendChild(firstAnswer);
-    firstAnswer.textContent = answersText.a;
-    answerList.appendChild(secondAnswer);
-    secondAnswer.textContent = answersText.b;
-    answerList.appendChild(thirdAnswer);
-    thirdAnswer.textContent = answersText.c;
-    answerList.appendChild(fourthAnswer);
-    fourthAnswer.textContent = answersText.d;
-}
+        var selectedAnswer = document.querySelector("answers" + i);
+        /*selectedAnswer.addEventListener("click", function() {
+            if (selectedAnswer.textContent === questions[questionNumber].answers.correct) {
+                var youAreCorrect = document.createElement("p");
+                youAreCorrect.setAttribute("class", "message");
+                youAreCorrect.textContent = "You are correct!";
+                mainScreen.appendChild(youAreCorrect)
+            }
+        });*/
+    }
+    
+};
 
-var questionList = {
-    text_1: "What language adds functionality to webpages?"
+/*function renderAnswerToBrowser() {
+    
+}*/
 
-}
+//create array of objects for questions and answers
+var questions = [
+    {
+        question: "What language adds functionality to webpages?",
+        answers: [
+            "Javascript",
+            "HTML",
+            "CSS",
+            "None of the above"
+        ],
+        correct: 0
+    },
+    {
+        question: "What is the Javascript operator used for logical OR?",
+        answers: [
+            "&&",
+            "===",
+            "||",
+            "**"
+        ],
+        correct: 2
+    },
+]
 
-var answersText = {
-    a: "Javascript",
-    b: "HTML",
-    c: "CSS",
-    d: "None of the above"
-}
 
 
 // when quiz ends save user initials and score to local storage
