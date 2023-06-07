@@ -60,23 +60,46 @@ function renderQuestionToBrowser(questionNumber) {
     
     
     for (var i = 0; i < questions[questionNumber].answers.length; i++) {
-        var question = Array.from(questions)[i];
+        //var question = Array.from(questions)[i];
         var answerButton = document.createElement("button");
-        answerButton.setAttribute("id", "answers");
+        answerButton.setAttribute("class", "answerBtn");
+        answerButton.setAttribute("id", "answers" + i);
         answerButton.textContent = questions[questionNumber].answers[i];
         answerList.appendChild(answerButton);
 
-        var selectedAnswer = document.querySelector("answers" + i);
-        /*selectedAnswer.addEventListener("click", function() {
-            if (selectedAnswer.textContent === questions[questionNumber].answers.correct) {
-                var youAreCorrect = document.createElement("p");
-                youAreCorrect.setAttribute("class", "message");
-                youAreCorrect.textContent = "You are correct!";
-                mainScreen.appendChild(youAreCorrect)
-            }
-        });*/
+        var selectedAnswer = document.querySelector("#answers" + i);
+        selectedAnswer.addEventListener("click", function(event) {
+                if (this.textContent === questions[questionNumber].answers[questions[questionNumber].correct]) {
+                    var youAreCorrect = document.createElement("p");
+                    youAreCorrect.setAttribute("class", "message");
+                    youAreCorrect.textContent = "You are correct!";
+                    mainScreen.appendChild(youAreCorrect)
+                    console.log(event);
+                    disableButtons();
+                } else {
+                    var youAreIncorrect = document.createElement("p");
+                    youAreIncorrect.setAttribute("class", "message");
+                    youAreIncorrect.textContent = "You are incorrect!";
+                    mainScreen.appendChild(youAreIncorrect);
+                    minusTime();
+                    disableButtons();
+                }
+                
+            });
     }
     
+};
+
+function minusTime() {
+    timer -= 5;
+    timerHolder.textContent = "Time: " + timer;
+};
+
+function disableButtons() {
+    var disabledBtn = document.querySelectorAll("button");
+    for (var i = 0; i < disabledBtn.length; i++) {
+        disabledBtn[i].setAttribute("disabled", "true");
+    }
 };
 
 /*function renderAnswerToBrowser() {

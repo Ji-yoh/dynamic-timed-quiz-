@@ -27,7 +27,7 @@ body {
     margin-right: 50vh; 
 }
 
-#answers {
+.answerBtn {
     margin: 10px;
     padding: 15px;
     background-color: purple;
