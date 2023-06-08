@@ -15,12 +15,12 @@ body {
 }
 
 #question_screen {
-    display: none;
+    /*display: none;*/
     margin: 10vh;
 }
 
 #answer_holder {
-    display: none;
+    /*display: none;*/
     justify-content: center;
     flex-direction: column;
     margin-left: 50vh;

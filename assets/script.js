@@ -3,11 +3,11 @@ var mainScreen = document.getElementById("main_screen");
 var splashScreen = document.getElementById("splash_screen");
 var startButton = document.getElementById("start_quiz");
 var timerHolder = document.getElementById("timer_holder");
+var qaScreen = document.getElementById("qa_screen");
 var questionScreen = document.getElementById("question_screen");
 /*var questionText = document.getElementById("question_text");*/
 var answerList = document.getElementById("answer_holder");
-var questionText = document.createElement("h3");
-questionText.setAttribute("id", "question");
+
 
 // generate answer buttons on answer holder and have choices change with each question
 // refactoring code to pull questions and answers from array of objects
@@ -20,12 +20,15 @@ var quizStarted = false;
 // if correct button is selected the next question is displayed
 // if incorrect button is selected timer needs to decrement
 
+function clearScreen() {
+    qaScreen.innerHTML = "";
+}
+
 startButton.addEventListener("click", function(){
     splashScreen.style.display = "none";
     renderTimerToBrowser();
     quizStarted = true;
     renderQuestionToBrowser(0);
-    //renderAnswerToBrowser();
 
     var interval = setInterval(function() {
         if (!quizStarted) {
@@ -49,18 +52,16 @@ function renderTimerToBrowser() {
     timerHolder.textContent = "Time: " + timer;
 }
 
-
 function renderQuestionToBrowser(questionNumber) {
     questionScreen.style.display = "block";
     answerList.style.display = "flex";
-    // declared questionText in global scope
+    var questionText = document.createElement("h3");
+    questionText.setAttribute("id", "question");
     questionText.textContent = questions[questionNumber].question; 
     
     questionScreen.appendChild(questionText);
-    
-    
+      
     for (var i = 0; i < questions[questionNumber].answers.length; i++) {
-        //var question = Array.from(questions)[i];
         var answerButton = document.createElement("button");
         answerButton.setAttribute("class", "answerBtn");
         answerButton.setAttribute("id", "answers" + i);
@@ -76,6 +77,7 @@ function renderQuestionToBrowser(questionNumber) {
                     mainScreen.appendChild(youAreCorrect)
                     console.log(event);
                     disableButtons();
+                    renderNextQuestion(questionNumber);
                 } else {
                     var youAreIncorrect = document.createElement("p");
                     youAreIncorrect.setAttribute("class", "message");
@@ -83,12 +85,23 @@ function renderQuestionToBrowser(questionNumber) {
                     mainScreen.appendChild(youAreIncorrect);
                     minusTime();
                     disableButtons();
+                    renderNextQuestion(questionNumber);
+                    console.log(event);
                 }
-                
+                console.log(selectedAnswer);
             });
-    }
-    
+    }   
 };
+
+function renderNextQuestion(questionNumber) {
+    questionNumber++;
+    if (questionNumber < questions.length) {
+        clearScreen();
+        renderQuestionToBrowser(questionNumber);
+    } else {
+        clearScreen();
+    }
+}
 
 function minusTime() {
     timer -= 5;
@@ -102,9 +115,6 @@ function disableButtons() {
     }
 };
 
-/*function renderAnswerToBrowser() {
-    
-}*/
 
 //create array of objects for questions and answers
 var questions = [
@@ -128,6 +138,15 @@ var questions = [
         ],
         correct: 2
     },
+    {
+        question: "True or False: Functions can be used as arguments in other functions.",
+        answers: [
+            "true",
+            "false",
+            "I don't know"
+        ],
+        correct: 0
+    }
 ]
 
 
