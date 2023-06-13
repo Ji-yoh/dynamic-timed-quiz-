@@ -15,8 +15,6 @@ var answerList = document.getElementById("answer_holder");
 var timer = 90;
 var quizStarted = false;
 
-// question text needs to be displayed on page (done)
-// answer choices need to appear as buttons, each html button needs to display a question- look for a JS method that creates buttons(?) (done)
 // if correct button is selected the next question is displayed
 // if incorrect button is selected timer needs to decrement
 
@@ -35,7 +33,7 @@ startButton.addEventListener("click", function(){
             return;
         }
         timer --;
-        // need to also decrement timer if incorrect answer is selected, find way to ID correct and incorrect answers and assign to buttons
+        
         if (timer <= 0) {
             clearInterval(interval);
 
@@ -57,18 +55,18 @@ function renderQuestionToBrowser(questionNumber) {
     answerList.style.display = "flex";
     var questionText = document.createElement("h3");
     questionText.setAttribute("id", "question");
-    questionText.textContent = questions[questionNumber].question; 
+    questionText.textContent = questions[questionNumber].question; // sets questionText content to question in array of objects
     
     questionScreen.appendChild(questionText);
       
-    for (var i = 0; i < questions[questionNumber].answers.length; i++) {
+    for (var i = 0; i < questions[questionNumber].answers.length; i++) { // creates answer buttons for each answer choice in object array
         var answerButton = document.createElement("button");
         answerButton.setAttribute("class", "answerBtn");
         answerButton.setAttribute("id", "answers" + i);
         answerButton.textContent = questions[questionNumber].answers[i];
         answerList.appendChild(answerButton);
 
-        var selectedAnswer = document.querySelector("#answers" + i);
+        var selectedAnswer = document.querySelector("#answers" + i); // display message if correct or incorrect answer is selected, disable other answer buttons, and display next question
         selectedAnswer.addEventListener("click", function(event) {
                 if (this.textContent === questions[questionNumber].answers[questions[questionNumber].correct]) {
                     var youAreCorrect = document.createElement("p");
@@ -93,7 +91,7 @@ function renderQuestionToBrowser(questionNumber) {
     }   
 };
 
-function renderNextQuestion(questionNumber) {
+function renderNextQuestion(questionNumber) { // supposed to increment the object array and display next question
     questionNumber++;
     if (questionNumber < questions.length) {
         clearScreen();
@@ -103,12 +101,12 @@ function renderNextQuestion(questionNumber) {
     }
 }
 
-function minusTime() {
+function minusTime() { // subtract from timer, called in renderQuestionToBrowser to decrease timer if incorrect answer is selected
     timer -= 5;
     timerHolder.textContent = "Time: " + timer;
 };
 
-function disableButtons() {
+function disableButtons() { // disable buttons, called in renderQuestionToBrowser to disable answer buttons after user selects an answer
     var disabledBtn = document.querySelectorAll("button");
     for (var i = 0; i < disabledBtn.length; i++) {
         disabledBtn[i].setAttribute("disabled", "true");
