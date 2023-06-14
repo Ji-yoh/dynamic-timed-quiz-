@@ -3,11 +3,9 @@ var mainScreen = document.getElementById("main_screen");
 var splashScreen = document.getElementById("splash_screen");
 var startButton = document.getElementById("start_quiz");
 var timerHolder = document.getElementById("timer_holder");
-var qaScreen = document.getElementById("qa_screen");
 var questionScreen = document.getElementById("question_screen");
-/*var questionText = document.getElementById("question_text");*/
-var answerList = document.getElementById("answer_holder");
 
+// have Q&A generate dynamically instead of hardcoded, this is causing issues with event listener
 
 // generate answer buttons on answer holder and have choices change with each question
 // refactoring code to pull questions and answers from array of objects
@@ -19,7 +17,7 @@ var quizStarted = false;
 // if incorrect button is selected timer needs to decrement
 
 function clearScreen() {
-    qaScreen.innerHTML = "";
+    mainScreen.innerHTML = "";
 }
 
 startButton.addEventListener("click", function(){
@@ -51,13 +49,20 @@ function renderTimerToBrowser() {
 }
 
 function renderQuestionToBrowser(questionNumber) {
-    questionScreen.style.display = "block";
-    answerList.style.display = "flex";
+    var questionScreen = document.createElement("div");
+    questionScreen.setAttribute("id","question_screen");
+
+    mainScreen.appendChild(questionScreen);
+
     var questionText = document.createElement("h3");
     questionText.setAttribute("id", "question");
     questionText.textContent = questions[questionNumber].question; // sets questionText content to question in array of objects
     
     questionScreen.appendChild(questionText);
+
+    var answerList = document.createElement("div");
+    answerList.setAttribute("id", "answer_holder");
+    mainScreen.appendChild(answerList);
       
     for (var i = 0; i < questions[questionNumber].answers.length; i++) { // creates answer buttons for each answer choice in object array
         var answerButton = document.createElement("button");
