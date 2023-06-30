@@ -8,16 +8,16 @@
     <link rel="stylesheet" href="./assets/styles.css">
 </head>
 <body>
-    <section id="main_screen">
-        <div id="splash_screen">
-            <h1>Coding Quiz!</h1>
-            <p>A short quiz to test your knowledge of basic web development.</p>
-            <button id="start_quiz">Start!</button>
-        </div>
-        <div id="timer_holder"></div>
-            <div id="question_screen">
-            </div>
-    </section>
+    <header> <!-- added timer, current score, & high score to header to prevent clearing -->
+        <div id="timer_holder">Time:</div><span id="timer"></span>
+        <div id="score_holder">Score:</div><span id="current_score">0</span>
+        <div id="high_score_holder">High Score:</div><span id="high_score">0</span>
+    </header>
+    <main>
+        <section id="main_screen">
+            <div id="question_screen"></div>
+        </section>
+    </main>
     <script src="assets/script.js"></script>
 </body>
 </html>
