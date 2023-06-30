@@ -3,8 +3,8 @@ var mainScreen = document.getElementById("main_screen");
 var splashScreen = document.getElementById("splash_screen");
 var startButton = document.getElementById("start_quiz");
 var questionScreen = document.getElementById("question_screen");
-var timerHolder = document.getElementById("timer_holder");
-var scoreHolder = document.getElementById("score_holder");
+var timerHolder = document.getElementById("timer");
+var scoreHolder = document.getElementById("current_score");
 var highScore = document.getElementById("high_score");
 
 
@@ -14,6 +14,7 @@ var highScore = document.getElementById("high_score");
 // refactoring code to pull questions and answers from array of objects
 
 var timer = 90;
+var score = 0;
 
 
 // if correct button is selected the next question is displayed
@@ -57,6 +58,8 @@ function startQuiz(){
     });
 
     timerHolder.textContent = timer;
+    scoreHolder.textContent = score;
+    // highScore.textContent = // pull high score from local storage;
 }
 
 function renderQuestionToBrowser(questionNumber) {
@@ -91,6 +94,7 @@ function renderQuestionToBrowser(questionNumber) {
                     mainScreen.appendChild(youAreCorrect)
                     console.log(event);
                     disableButtons();
+                    addScore()
                     renderNextQuestion(questionNumber); 
                 } else {
                     var youAreIncorrect = document.createElement("p");
@@ -117,6 +121,7 @@ function renderNextQuestion(questionNumber) { // supposed to increment the objec
     } else {
         setTimeout(function() {
             clearScreen();
+            quizOver();
         }, 500);
     }
 }; 
@@ -131,6 +136,7 @@ function countdown() {
             clearInterval(interval);
             questionScreen.textContent = "Out of time! Try Again!"
             questionScreen.style.fontWeight = "bold";
+            
         }
     }, 1000);
 };
@@ -146,6 +152,102 @@ function disableButtons() { // disable buttons, called in renderQuestionToBrowse
         disabledBtn[i].setAttribute("disabled", "true");
     }
 };
+
+function addScore() {
+    score++;
+    scoreHolder.textContent = score;
+}
+
+var userEntry = localStorage.getItem("userEntry");
+var getEntry = JSON.parse(userEntry);
+if(!getEntry) {
+    var highScoreValue = 0;
+} else { // sort high scores from highest to lowest
+    getEntry.sort(function(a, b){
+        return b.score - a.score;
+    })
+    var highScoreValue = getEntry[0].score;
+};
+
+// create function that creates a form for user to enter initials and save score to local storage
+function quizOver() {
+    timer = 0;
+    timerHolder.textContent = timer;
+
+    var endTitle = document.createElement("h1");
+    endTitle.textContent = "End of quiz! Thanks for trying!";
+    mainScreen.appendChild(endTitle);
+
+    var scoreSubmit = document.createElement("form");
+    scoreSubmit.setAttribute("id", "score_submit");
+    mainScreen.appendChild(scoreSubmit);
+
+    var inputField = document.createElement("input");
+    inputField.setAttribute("type", "text");
+    inputField.setAttribute("id", "user_initials");
+    inputField.setAttribute("maxlength", "2"); // set max length to 2 characters
+    inputField.setAttribute("placeholder", "Enter your initials");
+    scoreSubmit.appendChild(inputField);
+
+    var submitButton = document.createElement("button");
+    submitButton.setAttribute("id", "submit_button");
+    submitButton.textContent = "Submit";
+    scoreSubmit.appendChild(submitButton);
+    submitButton.addEventListener("click", function(event) {
+        event.preventDefault();
+        var scoreSubmit = document.querySelector("#user_initials").value;
+        var capitalizeSubmit = scoreSubmit.toUpperCase();
+        var allowedCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        for (var i=0; i < capitalizeSubmit.length; i++) {
+            if (allowedCharacters.indexOf(capitalizeSubmit[i]) === -1) {
+                alert("Please enter only letters");
+                return;
+            }
+        }
+
+        var userInput = {
+            initials: capitalizeSubmit,
+            score: score
+        }
+        var savedEntry = localStorage.getItem("userEntry");
+        var entry;
+        if (savedEntry) {
+            entry = JSON.parse(savedEntry);
+        } else {
+            entry = [];
+        }
+        entry.push(userInput);
+        localStorage.setItem("userEntry", JSON.stringify(entry));
+        clearScreen();
+        // display high scores
+    })
+}
+
+function displayHighScores() {
+    var highScoreTitle = document.createElement("h1");
+    highScoreTitle.textContent = "High Scores";
+    mainScreen.appendChild(highScoreTitle);
+
+    var userEntry = localStorage.getItem("userEntry");
+    if (!savedEntry) {
+        savedEntry = [];
+    } else {
+        savedEntry.sort(function(a, b){
+            return b.score - a.score;
+        })
+    }
+
+    highScoreValue = savedEntry[0].score;
+    highScore.textContent = highScoreValue;
+    var highScoreList = document.createElement("ol");
+    highScoreList.setAttribute("id", "high_score_list");
+    mainScreen.appendChild(highScoreList);
+
+    for (var i=0; i<savedEntry.length; i++) {
+        var highScoreEntry = document.createElement("li");
+        highScoreList.appendChild(highScoreEntry);
+    }
+}
 
 
 //create array of objects for questions and answers

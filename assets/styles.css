@@ -3,10 +3,30 @@ body {
     font-family:Verdana, Geneva, Tahoma, sans-serif;
 }
 
+header {
+    display: flex; 
+    flex-direction: row; 
+    justify-content: space-evenly; 
+    align-items: center;
+    width: 300vh;
+}
+
+#timer_holder {
+    width: 5vh;
+}
+
+#score_holder {
+    width: 5vh;
+}
+
+#high_score_holder {
+    width: 5vh;
+}
+
 #main_screen {
     border: solid 2px gray;
-    margin-left: 20vh;
-    margin-right: 20vh;
+    margin: 5vh 20vh 5vh 20vh;
+    padding: 10vh;
     box-shadow: 10px 5px 5px darkgrey;
 }
 
