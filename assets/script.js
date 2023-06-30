@@ -220,6 +220,7 @@ function quizOver() {
         localStorage.setItem("userEntry", JSON.stringify(entry));
         clearScreen();
         // display high scores
+        displayHighScores();
     })
 }
 
@@ -229,6 +230,7 @@ function displayHighScores() {
     mainScreen.appendChild(highScoreTitle);
 
     var userEntry = localStorage.getItem("userEntry");
+    var savedEntry = JSON.parse(userEntry);
     if (!savedEntry) {
         savedEntry = [];
     } else {
@@ -246,7 +248,22 @@ function displayHighScores() {
     for (var i=0; i<savedEntry.length; i++) {
         var highScoreEntry = document.createElement("li");
         highScoreList.appendChild(highScoreEntry);
+        highScoreEntry.textContent = savedEntry[i].initials + " - " + savedEntry[i].score;
+        highScoreList.appendChild(highScoreEntry);
     }
+
+    var playAgain = document.createElement("button");
+    playAgain.setAttribute("id", "play_again");
+    playAgain.textContent = "Play Again";
+    mainScreen.appendChild(playAgain);
+    playAgain.addEventListener("click", function() {
+        clearScreen();
+        startQuiz();
+        timer = 90;
+        timerHolder.textContent = timer;
+        score = 0;
+        scoreHolder.textContent = score;
+    })
 }
 
 
@@ -280,6 +297,26 @@ var questions = [
             "I don't know"
         ],
         correct: 0
+    },
+    {
+        question: "What does DOM stand for?",
+        answers: [
+            "Document Object Model",
+            "Document Object Manipulation",
+            "Document Object Method",
+            "None of the above"
+        ],
+        correct: 0
+    },
+    {
+        question: "What is an API?",
+        answers: [
+            "Application Processing Interface",
+            "Applied Programming Interface",
+            "Application Programming Interface",
+            "None of the above"
+        ],
+        correct: 2
     }
 ]
 
