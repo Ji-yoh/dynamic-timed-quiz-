@@ -43,23 +43,14 @@ function startQuiz(){
     startButton.textContent = "Start Quiz";
     buttonHolder.appendChild(startButton);
 
-    var viewScore = document.createElement("button");
-    viewScore.setAttribute("id", "view_score");
-    viewScore.textContent = "High Scores";
-
     startButton.addEventListener("click", function(){
         clearScreen();
         renderQuestionToBrowser(0);
         countdown();    
     });
 
-    viewScore.addEventListener("click", function(){
-        // display high scores when user clicks view score button
-    });
-
     timerHolder.textContent = timer;
     scoreHolder.textContent = score;
-    // highScore.textContent = // pull high score from local storage;
 }
 
 function renderQuestionToBrowser(questionNumber) {
@@ -106,7 +97,7 @@ function renderQuestionToBrowser(questionNumber) {
                     renderNextQuestion(questionNumber);
                     console.log(event);
                 }
-                console.log(selectedAnswer);
+                
             });
     }   
 };
@@ -131,12 +122,27 @@ function countdown() {
         if (timer > 0) {
             timerHolder.textContent = timer;
             timer --;
-        } else {
+        } else if (timer === 0){
             timerHolder.textContent = 0;
             clearInterval(interval);
-            questionScreen.textContent = "Out of time! Try Again!"
-            questionScreen.style.fontWeight = "bold";
+            var outofTime = document.createElement("p");
+            outofTime.textContent = "Out of time! Try Again!"
+            outofTime.style.fontWeight = "bold";  
+            mainScreen.appendChild(outofTime);
             
+            // adding try again button if timer runs out
+            var tryAgain = document.createElement("button");
+            tryAgain.setAttribute("id", "try_again");
+            tryAgain.textContent = "Try Again?";
+            mainScreen.appendChild(tryAgain);
+            tryAgain.addEventListener("click", function() {
+                clearScreen();
+                startQuiz();
+                timer = 90;
+                timerHolder.textContent = timer;
+                score = 0;
+                scoreHolder.textContent = score; 
+            })
         }
     }, 1000);
 };
@@ -156,7 +162,7 @@ function disableButtons() { // disable buttons, called in renderQuestionToBrowse
 function addScore() {
     score++;
     scoreHolder.textContent = score;
-}
+};
 
 var userEntry = localStorage.getItem("userEntry");
 var getEntry = JSON.parse(userEntry);
@@ -222,7 +228,7 @@ function quizOver() {
         // display high scores
         displayHighScores();
     })
-}
+};
 
 function displayHighScores() {
     var highScoreTitle = document.createElement("h1");
@@ -252,7 +258,7 @@ function displayHighScores() {
         highScoreList.appendChild(highScoreEntry);
     }
 
-    var playAgain = document.createElement("button");
+   var playAgain = document.createElement("button");
     playAgain.setAttribute("id", "play_again");
     playAgain.textContent = "Play Again";
     mainScreen.appendChild(playAgain);
@@ -262,7 +268,7 @@ function displayHighScores() {
         timer = 90;
         timerHolder.textContent = timer;
         score = 0;
-        scoreHolder.textContent = score;
+        scoreHolder.textContent = score; 
     })
 }
 
