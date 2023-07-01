@@ -37,4 +37,4 @@ Challenge 4
 ![screenshot2](./assets/screenshot2.png)
 
 ### Deployment
-Link - 
+Link - https://ji-yoh.github.io/dynamic-timed-quiz-/

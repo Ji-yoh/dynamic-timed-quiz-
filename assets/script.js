@@ -31,7 +31,7 @@ function startQuiz(){
     mainScreen.appendChild(quizTitle);
 
     var quizDescription = document.createElement("p");
-    quizDescription.textContent = "Test your knowledge of Javascript with this quiz! You will have 90 seconds to answer 3 questions. If you answer incorrectly, 5 seconds will be deducted from your time. Good luck!";
+    quizDescription.textContent = "Test your knowledge of Javascript with this quiz! You will have 90 seconds to answer the questions. If you answer incorrectly, 5 seconds will be deducted from your time. Good luck!";
     mainScreen.appendChild(quizDescription);
 
     var buttonHolder = document.createElement("div");
@@ -122,7 +122,7 @@ function countdown() {
         if (timer > 0) {
             timerHolder.textContent = timer;
             timer --;
-        } else if (timer === 0){
+        } else {
             timerHolder.textContent = 0;
             clearInterval(interval);
             var outofTime = document.createElement("p");
@@ -177,8 +177,9 @@ if(!getEntry) {
 
 // create function that creates a form for user to enter initials and save score to local storage
 function quizOver() {
-    timer = 0;
+    //timer = 0;
     timerHolder.textContent = timer;
+    timerHolder.style = "display: none;";
 
     var endTitle = document.createElement("h1");
     endTitle.textContent = "End of quiz! Thanks for trying!";
